@@ -1,0 +1,67 @@
+---
+title: "An Example of Plotly in Web Presentations"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.align='center', message = FALSE, warning=FALSE)
+```
+
+## Completion Date: Jun 19, 2017
+
+### Goal
+
+This project will demonstrate the use of plotly in a slideshow. It will feature the oil dataset from the `caret` package and principal components analysis (PCA) to plot a 3D plot.
+
+By plotting the first three principal components on a 3D plot, I expect to be able to clearly distinguish each type of oil as similar types should group together. As the first three principal components will capture a large portion of the variability in the data.
+
+## Load packages and data
+Necessary packages:
+```{r}
+library(data.table)
+library(caret)
+library(plotly)
+library(dplyr)
+```
+Load the data:
+```{r}
+data(oil)
+oil_x = fattyAcids
+oil_y = oilType
+```
+
+
+
+## Run PCA on the data
+
+```{r}
+train_pca_dat = oil_x
+# Create preProcess object using pca method
+train_pca_r <- preProcess(train_pca_dat, method = "pca", thresh = 0.99)
+# Create the new dataset with pca variables from the preProcess object
+train_pca <- predict(train_pca_r, train_pca_dat)
+# Add the data you want to predict from training set
+train_pca$oilType<- oil_y
+```
+
+
+## Code for the Plot
+```{r, results="hide"}
+plot_ly(x = train_pca$PC1, y = train_pca$PC2, z = train_pca$PC3, 
+        color = oilType, sizes = 100, type="scatter3d",mode = "markers") %>% 
+    layout(title = '3D plot for the first three principal components', 
+           scene = list(xaxis = list(title = 'PC1'), 
+                        yaxis = list(title = 'PC2'), 
+                        zaxis = list(title = 'PC3')), 
+           annotations = list(x = 1.13, y = 1.05, text = 'Oil Type',
+                              xref = 'paper',yref = 'paper', 
+                              showarrow = FALSE))
+```
+
+## The Plot
+```{r, echo=FALSE}
+plot_ly(x = train_pca$PC1, y = train_pca$PC2, z = train_pca$PC3, color = oilType, sizes = 100, type="scatter3d",mode = "markers") %>% layout(title = '3D plot for the first three principal components', scene = list(xaxis = list(title = 'PC1'), yaxis = list(title = 'PC2'), zaxis = list(title = 'PC3')), annotations = list(x = 1.13, y = 1.05,text = 'Oil Type',xref = 'paper',yref = 'paper', showarrow = FALSE))
+```
+Feel free to rotate the plot. As expected, the first three principal components do an excellent job of distinguishing the oil types!
+
+## The End
