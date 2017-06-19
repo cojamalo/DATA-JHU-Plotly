@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE,fig.align='center', message = FALSE, warning=F
 
 This project will demonstrate the use of plotly in a slideshow. It will feature the oil dataset from the `caret` package and principal components analysis (PCA) to plot a 3D plot.
 
-By plotting the first three principal components on a 3D plot, I expect to be able to clearly distinguish each type of oil as similar types should group together. As the first three principal components will capture a large portion of the variability in the data.
+By plotting the first three principal components on a 3D plot, I expect to be able to clearly distinguish each type of oil as similar types should group together as the first three principal components will capture a large portion of the variability in the data.
 
 ## Load packages and data
 Necessary packages:
